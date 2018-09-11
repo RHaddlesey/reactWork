@@ -1,0 +1,63 @@
+// so we can nest a class based component inside another class based component so that it can render 
+// inside the parent as we have done with AddOption inside option.
+// However, they are static until we add PROPS into the coponent call in the IndecisionApp
+// 1st we add <Header title="test value" /> so that we are able to change the static content
+// and make it dynamic.
+// 2nd we (this.props); in the class component so that it brings in the changes made in 1
+// 3rd we render this to the DOM inside the component <h1>{this.props.title}</h1>
+// it is like saying this addition called titled - show the value
+
+// <Header title={title} subtitle={subtitle} />
+// this is known as a key-value pair = so we are passing in a key and a value to the instance of
+// the class based component call. We can then use that new data back in the component by calling it in as a prop
+
+// with the <button onClick> we create our own self-containing class ES6 method - we just want to
+// reference it and not (CALL) it! So no ()
+
+//(e) is the event object = e.preventDefault() is used to prevent the form from rendering the whole page
+// <form onSubmit={onFormSubmit}> instead of <form onSubmit={onFormSubmit()}> because we do not want to call
+// the onFormSubmit method as that would just return undefined as it would keep returning an empty/cleared form
+// so we just want to reference the contents and call the method/function. e.target targets the data from the event (e)
+// in this case it is the form. We get for option = event - its elements - the const - its value
+// then we test if there is a vaule - then we set it back to an empty string.
+// we can also add .trim() so that it cuts off all extra spaces from the input - so = before the trim
+// '      ' would resuly in that getting added to the array. However, .trim() takes '        ' and trims it down to
+// just '' which will fail validation. It will also trim() '     richard haddlesey      ' down to just
+// 'richard haddlesey' = it does not affect the spaces inside any characters, just those before and after!
+
+// in AddOption we have a self-contained component - it has everything it needs to run because we have put in place
+// a local class method (function) handleAddOption also handlePick, handleRemoveAll = all are 
+// local class methods (functions) that run inside their component. This becomes more important when we seperate 
+// out our components into separate files.
+
+// most class components here have 2 methods - Options has = handleRemoveAll() {} and render() {}
+// both are methods applied to the class. Methods are bound to the class instance
+
+// to ensure all the functions and methods are bound to the right components and getting called and 
+// used correctly, we placed in the bind command. It breaks the bind if we use an event handler on a method
+// in class Options we can add <button onClick={this.handleRemoveAll.bind(this)}>Remove all options</button>
+// to make sure the this in render is the same as this in its sibling method handleRemoveAll
+// however, if we rely on bind too much - especially on something that will need to be re-rendered
+// frequently, bind becomes very inefficient and so we will change that from
+// <button onClick={this.handleRemoveAll.bind(this)}>Remove all options</button> to
+// constructor(props) {
+//    super(props);
+//    this.handleRemoveAll = this.handleRemoveAll.bind(this);}
+// by creating the bind as a constructor we set the bind once and then when it re-renders in the
+// render method, it does not need to be continually re-bound. 
+// So we set up a new constructor under the class with the argument (props) with the method of
+// props = this just takes in this.props into the constructor and nothing more. But, we can now
+// add some behaviour to this by setting this.handleRemoveAll to = itseld but now bound to (this)
+// so this.props is now bound to this constructor so it can be used - (props) in the constuctor 
+// is the same as this.props in the method below it. This overides its parent constructor. Because this bind
+// happens in a constructor before the method, the bind occurs as the class is initialised and will
+// not need to be continually re-bound like it would if bind was left in the render method.
+
+// PACKAGE.JSON
+// originally we had babel and live server installed via yarn as global and then called them in the terminal
+// now we have removed them and installed them locally inside the app folder. We then need to set up
+// package.json with the following scripts so that they will run anywhere
+// "scripts": {
+//      "serve": "live-server public/",
+//    "build": "babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch"
+//  },
